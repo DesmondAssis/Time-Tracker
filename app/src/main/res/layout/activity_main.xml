@@ -1,5 +1,183 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragment"
-    android:name="com.desmond.android.timetracker.MainActivityFragment"
-    tools:layout="@layout/fragment_main" android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <!--2015-09-15 -->
+    <TextView
+        android:id="@id/textView_new_summary"
+        android:layout_width="wrap_content"
+        android:layout_height="40.0dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="2014 - 04"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="30.0dip" />
+
+    <!-- sdf =================================== 四维 -->
+    <TextView
+        android:id="@id/tv_goal0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/textView_new_summary"
+        android:layout_toLeftOf="@id/textView_p0"
+        android:text="重要紧急: "
+        android:textAppearance="?android:textAppearanceLarge" />
+
+    <TextView
+        android:id="@id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/textView_p1"
+        android:layout_alignBottom="@id/textView_p1"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/tv_goal0"
+        android:layout_toLeftOf="@id/textView_p1"
+        android:text="重要不紧急:"
+        android:textAppearance="?android:textAppearanceLarge" />
+
+    <TextView
+        android:id="@id/tv_goal_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@id/textView6"
+        android:layout_below="@id/textView6"
+        android:text="不紧急不重要:"
+        android:textAppearance="?android:textAppearanceLarge" />
+
+    <TextView
+        android:id="@id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/textView4"
+        android:layout_toLeftOf="@id/textView_p2"
+        android:text="紧急不重要: "
+        android:textAppearance="?android:textAppearanceLarge" />
+
+    <TextView
+        android:id="@id/textView_p1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_goal0"
+        android:layout_toRightOf="@id/tv_goal0"
+        android:gravity="right"
+        android:text="0小时"
+        android:textAlignment="6"
+        android:textAppearance="?android:textAppearanceLarge" />
+
+    <TextView
+        android:id="@id/textView_p2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/textView6"
+        android:layout_alignBottom="@id/textView6"
+        android:layout_alignLeft="@id/textView_p1"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:text="0小时"
+        android:textAppearance="?android:textAppearanceLarge" />
+
+    <TextView
+        android:id="@id/textView_p3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tv_goal_title"
+        android:layout_alignBottom="@id/tv_goal_title"
+        android:layout_alignLeft="@id/textView_p2"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:text="0小时"
+        android:textAppearance="?android:textAppearanceLarge" />
+
+    <TextView
+        android:id="@id/textView_p0"
+        android:layout_width="120.0dip"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/textView_p1"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/tv_goal0"
+        android:gravity="right"
+        android:text="0小时"
+        android:textAlignment="6"
+        android:textAppearance="?android:textAppearanceLarge" />
+
+    <!-- sdf =================================== -->
+
+    <!-- 评分 -->
+    <RatingBar
+        android:id="@id/ratingBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/textView_top3"
+        android:layout_centerHorizontal="true" />
+
+    <!-- sdf =================================== -->
+
+    <!-- top 3 label -->
+    <TextView
+        android:id="@id/textView_top3"
+        android:layout_width="wrap_content"
+        android:layout_height="40.0dip"
+        android:layout_above="@id/lv_ti_list"
+        android:layout_alignLeft="@id/lv_ti_list"
+        android:layout_alignRight="@id/lv_ti_list"
+        android:text="本月时间使用TOP 30"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="25.0dip" />
+
+    <!-- top 3 list -->
+    <ListView
+        android:id="@id/lv_ti_list"
+        android:layout_width="fill_parent"
+        android:layout_height="180.0dip"
+        android:layout_above="@id/button_record_time"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" />
+
+
+
+    <!-- sdf =================================== -->
+
+    <!-- button save -->
+    <Button
+        android:id="@id/button_record_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main0"
+        android:text="记录时间都去哪儿了"
+        android:layout_alignTop="@id/button_record_items"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <!-- button save -->
+    <Button
+        android:id="@id/button_record_items"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main0"
+        android:text="新建事件"
+        android:layout_alignRight="@id/ratingBar1"
+        android:layout_alignEnd="@id/ratingBar1"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/tv_goal_title"
+        android:layout_toEndOf="@id/tv_goal_title" />
+    <Button
+        android:id="@id/button_del_items"
+        android:layout_width="33dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/listmain"
+        android:text="Del"
+        android:layout_below="@id/lv_ti_list"
+        android:layout_alignRight="@id/textView_p0"
+        />
+
+</RelativeLayout>

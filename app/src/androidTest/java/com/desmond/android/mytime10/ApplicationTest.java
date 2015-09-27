@@ -1,4 +1,4 @@
-package com.desmond.android.timetracker;
+package com.desmond.android.mytime10;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
