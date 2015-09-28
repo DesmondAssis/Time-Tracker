@@ -22,6 +22,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.desmond.android.mytime10.util.FileUtils;
+import com.desmond.android.mytime10.util.SymbolContants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import static com.desmond.android.mytime10.util.FileUtils.sd_mt_record_tiems_FileName;
 import static com.desmond.android.mytime10.util.FileUtils.sd_mt_items_FileName;
@@ -58,10 +60,11 @@ public class Record extends AppCompatActivity {
                         Calendar calendar = Calendar.getInstance();
                         calendar.set(year, monthOfYear, dayOfMonth);
                         SimpleDateFormat format = new SimpleDateFormat(
-                                "yyyy年MM月dd日");
+                                "EEE yyyy年MM月dd日", Locale.CHINA);
                         Toast.makeText(Record.this,
                                 format.format(calendar.getTime()), Toast.LENGTH_SHORT)
                                 .show();
+
                         // end:test
                     }
                 });
@@ -213,7 +216,8 @@ public class Record extends AppCompatActivity {
                 double duration = Record.this.resultCustomTime != 0 ? Record.this.resultCustomTime : getDuration();
                 if (duration != 0) {
                     Record.this.date = (Record.this.datePicker.getYear() + "-" + (1 + Record.this.datePicker.getMonth()) + "-" + Record.this.datePicker.getDayOfMonth());
-                    FileUtils.writeFileSdcard(sd_mt_record_tiems_FileName, Record.this.date + "," + Record.this.resultCurrentItem + "," + duration + "," + Record.this.priority + ";");
+                    FileUtils.writeFileSdcard(sd_mt_record_tiems_FileName, Record.this.date + SymbolContants.COLON + Record.this.resultCurrentItem + SymbolContants.COLON
+                            + duration + SymbolContants.COLON + Record.this.priority + SymbolContants.SEM);
                     Record.this.finish();
                 }
             }

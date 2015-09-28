@@ -18,6 +18,7 @@
         <activity android:name="TimeItems" android:screenOrientation="portrait" />
         <activity android:name="Record" android:screenOrientation="portrait" />
         <activity android:name="DeleteRecord" android:screenOrientation="portrait" />
+        <activity android:name="Todos" android:screenOrientation="portrait" />
     </application>
 
 </manifest>

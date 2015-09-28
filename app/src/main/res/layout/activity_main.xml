@@ -65,7 +65,7 @@
 
     <TextView
         android:id="@id/textView_p1"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/tv_goal0"
@@ -77,7 +77,7 @@
 
     <TextView
         android:id="@id/textView_p2"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/textView6"
         android:layout_alignBottom="@id/textView6"
@@ -89,37 +89,71 @@
 
     <TextView
         android:id="@id/textView_p3"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/tv_goal_title"
         android:layout_alignBottom="@id/tv_goal_title"
         android:layout_alignLeft="@id/textView_p2"
         android:layout_alignParentRight="true"
         android:gravity="right"
-        android:text="0小时"
+        android:text="p30小时"
         android:textAppearance="?android:textAppearanceLarge" />
 
     <TextView
         android:id="@id/textView_p0"
-        android:layout_width="120.0dip"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_above="@id/textView_p1"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/tv_goal0"
         android:gravity="right"
-        android:text="0小时"
+        android:text="p00小时"
         android:textAlignment="6"
         android:textAppearance="?android:textAppearanceLarge" />
 
     <!-- sdf =================================== -->
 
-    <!-- 评分 -->
-    <RatingBar
-        android:id="@id/ratingBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/textView_top3"
-        android:layout_centerHorizontal="true" />
+    <!-- 日,周，月所要做的事情列表 -->
+
+    <!--<ListView-->
+        <!--android:id="@id/lv_daily_task_list"-->
+        <!--android:layout_width="20dip"-->
+        <!--android:layout_height="50.0dip"-->
+        <!--android:layout_alignLeft="@id/textView_top3"-->
+        <!--android:layout_above="@id/textView_top3"-->
+
+        <!--/>-->
+    <!--<ListView-->
+        <!--android:id="@id/lv_weekly_task_list"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="50.0dip"-->
+        <!--android:layout_below="@id/tv_goal_title"-->
+        <!--android:layout_centerHorizontal="true" />-->
+    <ListView
+        android:id="@id/lv_daily_task_list"
+        android:layout_width="150dp"
+        android:layout_height="80.0dip"
+        android:layout_below="@id/tv_goal_title"
+        android:layout_toStartOf="@id/lv_weekly_task_list"
+        android:layout_toLeftOf="@id/lv_weekly_task_list" />
+
+    <ListView
+        android:id="@id/lv_weekly_task_list"
+        android:layout_width="160dp"
+        android:layout_height="80.0dip"
+        android:layout_alignTop="@+id/lv_monthly_task_list"
+        android:layout_alignLeft="@id/button_record_time"
+        android:layout_alignStart="@id/button_record_time"
+        android:layout_toStartOf="@id/button_todos"
+        android:layout_toLeftOf="@id/button_todos" />
+
+    <ListView
+        android:id="@+id/lv_monthly_task_list"
+        android:layout_width="150dp"
+        android:layout_height="80.0dip"
+        android:layout_alignTop="@id/lv_daily_task_list"
+        android:layout_toRightOf="@id/lv_weekly_task_list"
+        android:layout_toEndOf="@id/lv_weekly_task_list" />
 
     <!-- sdf =================================== -->
 
@@ -129,11 +163,12 @@
         android:layout_width="wrap_content"
         android:layout_height="40.0dip"
         android:layout_above="@id/lv_ti_list"
-        android:layout_alignLeft="@id/lv_ti_list"
         android:layout_alignRight="@id/lv_ti_list"
-        android:text="本月时间使用TOP 30"
+        android:text="本月时间使用TOP 3"
         android:textAppearance="?android:textAppearanceLarge"
-        android:textSize="25.0dip" />
+        android:textSize="19.0dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <!-- top 3 list -->
     <ListView
@@ -150,26 +185,37 @@
 
     <!-- button save -->
     <Button
-        android:id="@id/button_record_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/main0"
-        android:text="记录时间都去哪儿了"
-        android:layout_alignTop="@id/button_record_items"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <!-- button save -->
-    <Button
         android:id="@id/button_record_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/main0"
         android:text="新建事件"
-        android:layout_alignRight="@id/ratingBar1"
-        android:layout_alignEnd="@id/ratingBar1"
+        android:layout_alignTop="@id/button_record_time"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <!-- button save -->
+
+    <Button
+        android:id="@id/button_todos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main0"
+        android:text="TODOs"
+        android:layout_below="@id/lv_ti_list"
+        android:layout_toLeftOf="@id/button_del_items"
+        android:layout_toStartOf="@id/button_del_items" />
+
+    <Button
+        android:id="@id/button_record_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main0"
+        android:text="记录时间"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/tv_goal_title"
-        android:layout_toEndOf="@id/tv_goal_title" />
+        android:layout_toRightOf="@id/button_record_items"
+        android:layout_toEndOf="@id/button_record_items"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp" />
     <Button
         android:id="@id/button_del_items"
         android:layout_width="33dp"

@@ -6,6 +6,7 @@
     <item type="id" name="textView_new_summary">false</item>
     <item type="id" name="button_save">false</item>
     <item type="id" name="button_record_time">false</item>
+    <item type="id" name="button_todos">false</item>
     <item type="id" name="button_record_items">false</item>
     <item type="id" name="button_del_items">false</item>
     <item type="id" name="lv_ti_list">false</item>
@@ -41,4 +42,8 @@
     <item type="id" name="button_ok_ti">false</item>
     <item type="id" name="et_new_ti">false</item>
     <item type="id" name="action_settings">false</item>
+
+    <item type="id" name="lv_daily_task_list">false</item>
+    <item type="id" name="lv_weekly_task_list">false</item>
+    <item type="id" name="lv_monthly_task_list">false</item>
 </resources>
