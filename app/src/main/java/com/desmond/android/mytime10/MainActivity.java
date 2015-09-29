@@ -1,6 +1,8 @@
 package com.desmond.android.mytime10;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -253,18 +255,47 @@ public class MainActivity extends AppCompatActivity {
         this.listDailyTasks.setAdapter(new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, this.dailyData));
         this.listDailyTasks.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int paramAnonymousInt, long paramAnonymousLong) {
-                Toast.makeText(MainActivity.this, "TIPS: 长按可以删除一项时间。", Toast.LENGTH_SHORT).show();
+                tasksDailyDeleteDialog(paramAnonymousInt);
             }
         });
 
-        this.listDailyTasks.setOnItemLongClickListener(new OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int paramAnonymousInt, long paramAnonymousLong) {
+        // weekly
+        this.weeeklyData.clear();
+        readSingltonToList(SymbolContants.WEEKLY);
+        this.listWeeklyTasks.setAdapter(new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, this.weeeklyData));
+        this.listWeeklyTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int paramAnonymousInt, long paramAnonymousLong) {
+                tasksWeeklyDeleteDialog(paramAnonymousInt);
+            }
+        });
+
+        // monthly
+        this.monthlyData.clear();
+        readSingltonToList(SymbolContants.MONTHLY);
+        this.listMonthlyTasks.setAdapter(new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, this.monthlyData));
+        this.listMonthlyTasks.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int paramAnonymousInt, long paramAnonymousLong) {
+                tasksMonthlyDeleteDialog(paramAnonymousInt);
+            }
+        });
+
+    }
+
+    private void tasksDailyDeleteDialog(final int paramAnonymousInt) {
+        final String item = MainActivity.this.dailyData.get(paramAnonymousInt);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage("确定要删除吗");
+        builder.setTitle("删除: " + item);
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 String currentDateStr = DateTimeUtils.getCurrentDateStr();
                 List<String> list = readSingltonToList(sd_mt_todo_daily_FileName);
                 if (list != null && list.size() > 0) {
-                    for (String str : list) {
-                        if (str.equals(currentDateStr + SymbolContants.COLON + MainActivity.this.dailyData.get(paramAnonymousInt))) {
-                            list.remove(str);
+                    for (int i = 0; i < list.size(); i++) {
+                        String str = list.get(i);
+                        if (str.equals(currentDateStr + SymbolContants.COLON + item)) {
+                            list.remove(i);
                         }
                     }
                 }
@@ -277,31 +308,37 @@ public class MainActivity extends AppCompatActivity {
                     sb.append(str).append(SymbolContants.SEM);
                 }
 
-//                FileUtils.delete(sd_mt_todo_daily_FileName);
                 FileUtils.writeFileSdcardNew(sd_mt_todo_daily_FileName, sb.toString());
 
-                return true;
+                dialog.dismiss();
             }
         });
 
-        // weekly
-        this.weeeklyData.clear();
-        readSingltonToList(SymbolContants.WEEKLY);
-        this.listWeeklyTasks.setAdapter(new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, this.weeeklyData));
-        this.listWeeklyTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int paramAnonymousInt, long paramAnonymousLong) {
-                Toast.makeText(MainActivity.this, "TIPS: 长按可以删除一项时间。", Toast.LENGTH_SHORT).show();
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
-        this.listWeeklyTasks.setOnItemLongClickListener(new OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int paramAnonymousInt, long paramAnonymousLong) {
 
+        builder.create().show();
+    }
+
+    private void tasksWeeklyDeleteDialog(final int paramAnonymousInt) {
+        final String item = MainActivity.this.weeeklyData.get(paramAnonymousInt);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage("确定要删除吗");
+        builder.setTitle("删除: " + item);
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 String currentWeekStr = DateTimeUtils.getWeekOfYear();
                 List<String> list = readSingltonToList(sd_mt_todo_weekly_FileName);
                 if (list != null && list.size() > 0) {
-                    for (String str : list) {
-                        if (str.equals(currentWeekStr + SymbolContants.COLON + MainActivity.this.weeeklyData.get(paramAnonymousInt))) {
-                            list.remove(str);
+                    for (int i = 0; i < list.size(); i++) {
+                        String str = list.get(i);
+                        if (str.equals(currentWeekStr + SymbolContants.COLON + item)) {
+                            list.remove(i);
                         }
                     }
                 }
@@ -314,31 +351,37 @@ public class MainActivity extends AppCompatActivity {
                     sb.append(str).append(SymbolContants.SEM);
                 }
 
-//                FileUtils.delete(sd_mt_todo_weekly_FileName);
                 FileUtils.writeFileSdcardNew(sd_mt_todo_weekly_FileName, sb.toString());
 
-                return false;
+                dialog.dismiss();
             }
         });
 
-        // monthly
-        this.monthlyData.clear();
-        readSingltonToList(SymbolContants.MONTHLY);
-        this.listMonthlyTasks.setAdapter(new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, this.monthlyData));
-        this.listMonthlyTasks.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int paramAnonymousInt, long paramAnonymousLong) {
-                Toast.makeText(MainActivity.this, "TIPS: 长按可以删除一项时间。", Toast.LENGTH_SHORT).show();
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
-        this.listMonthlyTasks.setOnItemLongClickListener(new OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int paramAnonymousInt, long paramAnonymousLong) {
 
+        builder.create().show();
+    }
+
+    private void tasksMonthlyDeleteDialog(final int paramAnonymousInt) {
+        final String item = MainActivity.this.monthlyData.get(paramAnonymousInt);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage("确定要删除吗");
+        builder.setTitle("删除: " + item);
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 String currentMonthStr = DateTimeUtils.getCurrentMonthStr();
                 List<String> list = readSingltonToList(sd_mt_todo_monthly_FileName);
                 if (list != null && list.size() > 0) {
-                    for (String str : list) {
-                        if (str.equals(currentMonthStr + SymbolContants.COLON + MainActivity.this.monthlyData.get(paramAnonymousInt))) {
-                            list.remove(str);
+                    for (int i = 0; i < list.size(); i++) {
+                        String str = list.get(i);
+                        if (str.equals(currentMonthStr + SymbolContants.COLON + item)) {
+                            list.remove(i);
                         }
                     }
                 }
@@ -351,13 +394,20 @@ public class MainActivity extends AppCompatActivity {
                     sb.append(str).append(SymbolContants.SEM);
                 }
 
-//                FileUtils.delete(sd_mt_todo_monthly_FileName);
                 FileUtils.writeFileSdcardNew(sd_mt_todo_monthly_FileName, sb.toString());
 
-                return false;
+                dialog.dismiss();
             }
         });
 
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
     }
 
     private void readSingltonToList(int type) {
