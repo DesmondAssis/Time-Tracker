@@ -28,7 +28,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/textView_new_summary"
         android:layout_toLeftOf="@id/textView_p0"
-        android:text="重要紧急: "
+        android:textSize="17.0dip"
+        android:text="重要紧急(50): "
         android:textAppearance="?android:textAppearanceLarge" />
 
     <TextView
@@ -38,9 +39,10 @@
         android:layout_alignBaseline="@id/textView_p1"
         android:layout_alignBottom="@id/textView_p1"
         android:layout_alignParentLeft="true"
+        android:textSize="17.0dip"
         android:layout_below="@id/tv_goal0"
         android:layout_toLeftOf="@id/textView_p1"
-        android:text="重要不紧急:"
+        android:text="重要不紧急(30):"
         android:textAppearance="?android:textAppearanceLarge" />
 
     <TextView
@@ -49,8 +51,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@id/textView6"
+        android:textSize="17.0dip"
         android:layout_below="@id/textView6"
-        android:text="不紧急不重要:"
+        android:text="不紧急不重要(10):"
         android:textAppearance="?android:textAppearanceLarge" />
 
     <TextView
@@ -58,9 +61,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:textSize="17.0dip"
         android:layout_below="@id/textView4"
         android:layout_toLeftOf="@id/textView_p2"
-        android:text="紧急不重要: "
+        android:text="紧急不重要(10): "
         android:textAppearance="?android:textAppearanceLarge" />
 
     <TextView
@@ -68,6 +72,7 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:textSize="19.0dip"
         android:layout_below="@id/tv_goal0"
         android:layout_toRightOf="@id/tv_goal0"
         android:gravity="right"
@@ -83,6 +88,7 @@
         android:layout_alignBottom="@id/textView6"
         android:layout_alignLeft="@id/textView_p1"
         android:layout_alignParentRight="true"
+        android:textSize="19.0dip"
         android:gravity="right"
         android:text="0小时"
         android:textAppearance="?android:textAppearanceLarge" />
@@ -95,6 +101,7 @@
         android:layout_alignBottom="@id/tv_goal_title"
         android:layout_alignLeft="@id/textView_p2"
         android:layout_alignParentRight="true"
+        android:textSize="19.0dip"
         android:gravity="right"
         android:text="p30小时"
         android:textAppearance="?android:textAppearanceLarge" />
@@ -106,6 +113,7 @@
         android:layout_above="@id/textView_p1"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/tv_goal0"
+        android:textSize="19.0dip"
         android:gravity="right"
         android:text="p00小时"
         android:textAlignment="6"
