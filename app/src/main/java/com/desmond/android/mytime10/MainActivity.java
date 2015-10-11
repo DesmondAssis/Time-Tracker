@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
     private Button button_del_items;
     private Button button_todos;
 
+    private Button button_preDay;
+    private Button button_nextDay;
+
+    // text
     private TextView dateAlert;
     private TextView textTop3;
 
@@ -73,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
     List<String> monthlyData = new ArrayList();
 
     private int textFlag = 0;
+    private String currentDateStr = "";
+    private boolean ischangeDate4Todos = false; // 按下上一天，下一天，todos 跟着改变
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +119,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         // alert label
+        String cds = DateTimeUtils.getCurrentDateStr();
         this.dateAlert = (TextView)findViewById(R.id.textView_new_summary);
-        this.dateAlert.setText(DateTimeUtils.getCurrentDateStr());
+        this.dateAlert.setText(cds);
+        currentDateStr = cds;
+
         this.dateAlert.setTextColor(Color.parseColor("#87ceeb"));
         this.textTop3 = (TextView)findViewById(R.id.textView_top3);
         this.textTop3.setTextColor(Color.parseColor("#87ceeb"));
@@ -122,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String alertText = DateTimeUtils.getCurrentDateStr();
+                currentDateStr = alertText;
                 String top3 = "今天时间使用TOP 3";
                 if(textFlag == 1) { // 月
                     alertText = DateTimeUtils.getCurrentMonthStr();
@@ -248,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
         this.data.clear();
         this.data.addAll(getTop3());
         this.listAllRecords.setAdapter(new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, this.data));
+        this.listAllRecords.refreshDrawableState();
 
         // daily
         this.dailyData.clear();
@@ -414,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (type) {
             case SymbolContants.DAILY : {
-                String currentDateStr = DateTimeUtils.getCurrentDateStr();
+                String currentDateStr = DateTimeUtils.getCurrentDateStr(this.currentDateStr, this.ischangeDate4Todos);
                 List<String> list = readSingltonToList(sd_mt_todo_daily_FileName);
                 if(list != null && list.size() > 0) {
                     for(String str : list) {
@@ -427,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case SymbolContants.WEEKLY: {
-                String currentWeek = DateTimeUtils.getWeekOfYear();
+                String currentWeek = DateTimeUtils.getWeekOfYear(this.currentDateStr, this.ischangeDate4Todos);
                 List<String> list = readSingltonToList(sd_mt_todo_weekly_FileName);
                 if(list != null && list.size() > 0) {
                     for(String str : list) {
@@ -440,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             default: {
-                String currentMonthStr = DateTimeUtils.getCurrentMonthStr();
+                String currentMonthStr = DateTimeUtils.getCurrentMonthStr(this.currentDateStr, this.ischangeDate4Todos);
                 List<String> list = readSingltonToList(sd_mt_todo_monthly_FileName);
                 if(list != null && list.size() > 0) {
                     for(String str : list) {
@@ -513,6 +524,45 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(manageItems, 0);
             }
         });
+
+        // 上一天
+        this.button_preDay = ((Button) findViewById(R.id.bt_pre_day));
+        this.button_preDay.setBackgroundColor(Color.parseColor("#87ceeb"));
+        this.button_preDay.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View paramAnonymousView) {
+                textFlag = 0; // 切换到 「天」模式
+                String alertText = DateTimeUtils.getPreOrNextDateStr(currentDateStr, true);
+                currentDateStr = alertText;
+
+                String top3 = "今天时间使用TOP 3";
+
+                MainActivity.this.dateAlert.setText(alertText);
+                MainActivity.this.textTop3.setText(top3);
+
+                MainActivity.this.ischangeDate4Todos = true;
+                initList();
+                MainActivity.this.ischangeDate4Todos = false;
+            }
+        });
+
+        this.button_nextDay = ((Button) findViewById(R.id.bt_next_day));
+        this.button_nextDay.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View paramAnonymousView) {
+                textFlag = 0; // 切换到 「天」模式
+                String alertText = DateTimeUtils.getPreOrNextDateStr(currentDateStr, false);
+                currentDateStr = alertText;
+
+                String top3 = "今天时间使用TOP 3";
+
+                MainActivity.this.dateAlert.setText(alertText);
+                MainActivity.this.textTop3.setText(top3);
+
+                MainActivity.this.ischangeDate4Todos = true;
+                initList();
+                MainActivity.this.ischangeDate4Todos = false;
+            }
+        });
+
     }
 
     public void updatelist(int type) {

@@ -21,7 +21,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.desmond.android.mytime10.util.DateTimeUtils;
 import com.desmond.android.mytime10.util.FileUtils;
+import com.desmond.android.mytime10.util.ProrityEnum;
 import com.desmond.android.mytime10.util.SymbolContants;
 
 import java.io.File;
@@ -116,8 +118,12 @@ public class Record extends AppCompatActivity {
     double resultCustomTime = 0d;
     String resultCurrentItem = "";
     int priority = 0;
-    TextView tv_new_summary;
     Button bt_save;
+
+    // text view
+    TextView tv_new_summary;
+    TextView tv_latest_event;
+
 
     private void initList() {
         this.mySpinner = ((Spinner) findViewById(R.id.spinner1));
@@ -208,6 +214,11 @@ public class Record extends AppCompatActivity {
         this.tv_new_summary = ((TextView) findViewById(R.id.textView_new_summary));
         this.tv_new_summary.setTextColor(Color.parseColor("#87ceeb"));
 
+        // latest event label
+        this.tv_latest_event = ((TextView) findViewById(R.id.textView_latest_event));
+        this.tv_latest_event.setTextColor(Color.parseColor("#87ceeb"));
+        this.tv_latest_event.setText(getLatestEvent());
+
         // button
         this.bt_save = ((Button) findViewById(R.id.button_save));
         this.bt_save.setBackgroundResource(R.drawable.main0);
@@ -217,11 +228,42 @@ public class Record extends AppCompatActivity {
                 if (duration != 0) {
                     Record.this.date = (Record.this.datePicker.getYear() + "-" + (1 + Record.this.datePicker.getMonth()) + "-" + Record.this.datePicker.getDayOfMonth());
                     FileUtils.writeFileSdcard(sd_mt_record_tiems_FileName, Record.this.date + SymbolContants.COLON + Record.this.resultCurrentItem + SymbolContants.COLON
-                            + duration + SymbolContants.COLON + Record.this.priority + SymbolContants.SEM);
+                            + duration + SymbolContants.COLON + Record.this.priority
+                            + SymbolContants.COLON + getLastRecordTime() + SymbolContants.SEM);
                     Record.this.finish();
                 }
             }
         });
+    }
+
+    private String getLatestEvent() {
+        String x1 = FileUtils.readFileSdcard(sd_mt_record_tiems_FileName);
+        String latestEvent = "no latest event!";
+        if (!x1.isEmpty()) {
+            String[] arrayOfString = x1.split(";");
+            if (arrayOfString != null && arrayOfString.length > 0) {
+                String dateFilter = DateTimeUtils.getCurrentDateStr();
+                for (String str : arrayOfString) {
+                    if(str != null && str.startsWith(dateFilter)) {
+                        String[] strArr = str.split(SymbolContants.COLON);
+                        latestEvent  = (strArr.length ==  5 ? strArr[4] : "legacy") + ":\n"
+                                + strArr[0] + ": " + strArr[1] + ": " + strArr[2] + " 分钟" + ": "
+                                + ProrityEnum.getByPrority(strArr[3]).getName();
+                    }
+                }
+            }
+        }
+
+        return latestEvent;
+    }
+
+    private String getLastRecordTime() {
+        double duration = Record.this.resultCustomTime != 0 ? Record.this.resultCustomTime : getDuration();
+        if(Record.this.resultCustomTime != 0) {
+            return DateTimeUtils.getCurrentTime();
+        } else {
+            return this.timeEndPicker.getCurrentHour() + "~" + this.timeEndPicker.getCurrentMinute();
+        }
     }
 
     private double getDuration() {

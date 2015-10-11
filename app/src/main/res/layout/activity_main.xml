@@ -20,6 +20,28 @@
         android:textAppearance="?android:textAppearanceLarge"
         android:textSize="30.0dip" />
 
+    <Button
+        android:id="@id/bt_pre_day"
+        android:layout_width="33dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/listmain"
+        android:text="P"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/bt_next_day"
+        android:layout_toStartOf="@id/bt_next_day"
+        android:layout_alignBottom="@id/textView_new_summary" />
+
+    <Button
+        android:id="@id/bt_next_day"
+        android:layout_width="33dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/listmain"
+        android:text="N"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@id/button_todos"
+        android:layout_alignEnd="@id/button_todos"
+        android:layout_above="@id/textView_p0" />
+
     <!-- sdf =================================== 四维 -->
     <TextView
         android:id="@id/tv_goal0"

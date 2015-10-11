@@ -46,4 +46,9 @@
     <item type="id" name="lv_daily_task_list">false</item>
     <item type="id" name="lv_weekly_task_list">false</item>
     <item type="id" name="lv_monthly_task_list">false</item>
+
+    <item type="id" name="bt_pre_day">false</item>
+    <item type="id" name="bt_next_day">false</item>
+
+    <item type="id" name="textView_latest_event">false</item>
 </resources>

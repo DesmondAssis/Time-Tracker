@@ -28,6 +28,17 @@
         android:layout_centerVertical="true"
         android:layout_below="@id/textView_new_summary" />
 
+    <TextView
+        android:id="@id/textView_latest_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Latest event"
+        android:layout_above="@id/spinner1"
+        android:layout_alignRight="@+id/timeEndPicker"
+        android:layout_alignEnd="@+id/timeEndPicker"
+        android:layout_alignLeft="@id/datePicker1"
+        android:layout_alignStart="@id/datePicker1" />
+
     <Spinner
         android:id="@id/spinner1"
         android:layout_width="120.0dip"
