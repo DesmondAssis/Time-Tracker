@@ -30,9 +30,10 @@ public class FileUtils {
             localFileInputStream.close();
             return str;
         } catch (Exception localException) {
-            while (true)
-                localException.printStackTrace();
+            localException.printStackTrace();
         }
+
+        return str;
     }
 
     public static void writeFileSdcard(String path, String paramString2) {
@@ -66,8 +67,7 @@ public class FileUtils {
         }
         catch (Exception localException)
         {
-            while (true)
-                localException.printStackTrace();
+            localException.printStackTrace();
         }
     }
 

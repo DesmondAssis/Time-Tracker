@@ -300,7 +300,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String currentDateStr = DateTimeUtils.getCurrentDateStr();
+//                String currentDateStr = DateTimeUtils.getCurrentDateStr();
+                String currentDateStr = MainActivity.this.currentDateStr;
                 List<String> list = readSingltonToList(sd_mt_todo_daily_FileName);
                 if (list != null && list.size() > 0) {
                     for (int i = 0; i < list.size(); i++) {
@@ -549,10 +550,50 @@ public class MainActivity extends AppCompatActivity {
         this.button_nextDay.setOnClickListener(new View.OnClickListener() {
             public void onClick(View paramAnonymousView) {
                 textFlag = 0; // 切换到 「天」模式
+
+                String cu = currentDateStr;
                 String alertText = DateTimeUtils.getPreOrNextDateStr(currentDateStr, false);
                 currentDateStr = alertText;
 
+
+                // 自动copy前一天的daily task
+
+                String cds = DateTimeUtils.getCurrentDateStr(alertText, true);
+                List<String> list = readSingltonToList(sd_mt_todo_daily_FileName);
+                if(list != null && list.size() > 0) {
+                    boolean isExists = false;
+                    for(String str : list) {
+                        if(str.startsWith(cds)) {
+                            isExists = true;
+                            break;
+                        }
+                    }
+
+                    if(!isExists) {
+                        String precds = DateTimeUtils.getCurrentDateStr(cu, true);
+                        List<String> toStoredList = new ArrayList<String>();
+                        for(String str : list) {
+                            if(str.startsWith(precds)) {
+                                String data[] = str.split(SymbolContants.COLON);
+                                toStoredList.add(data[1]);
+                            }
+                        }
+
+                        if(!toStoredList.isEmpty()) {
+                            StringBuilder sb = new StringBuilder();
+                            for(String str : toStoredList) {
+                                sb.append(currentDateStr).append(SymbolContants.COLON)
+                                        .append(str).append(SymbolContants.SEM);
+                            }
+
+                            FileUtils.writeFileSdcard(sd_mt_todo_daily_FileName, sb.toString());
+                        }
+                    }
+                }
+
+
                 String top3 = "今天时间使用TOP 3";
+
 
                 MainActivity.this.dateAlert.setText(alertText);
                 MainActivity.this.textTop3.setText(top3);
@@ -560,6 +601,8 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.ischangeDate4Todos = true;
                 initList();
                 MainActivity.this.ischangeDate4Todos = false;
+
+
             }
         });
 

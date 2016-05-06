@@ -41,15 +41,31 @@ import static com.desmond.android.mytime10.util.FileUtils.sd_mt_items_FileName;
 
 public class Record extends AppCompatActivity {
     private DatePicker datePicker;
-    private TimePicker timeStartPicker;
-    private TimePicker timeEndPicker;
+//    private TimePicker timeStartPicker;
+//    private TimePicker timeEndPicker;
+    private int data_start_h = 0;
+    private int data_start_m = 0;
+    private int data_end_h = 0;
+    private int data_end_m = 0;
+    private Spinner s_start_h;
+    private Spinner s_start_m;
+    private Spinner s_end_h;
+    private Spinner s_end_m;
+    private List<Integer> list_start_h = new ArrayList();
+    private List<Integer> list_start_m = new ArrayList();
+    private List<Integer> list_end_h = new ArrayList();
+    private List<Integer> list_end_m = new ArrayList();
+    private int lastH = 0;
+    private int lastM = 0;
+
 
     private void initDateTimePicker() {
         this.datePicker = ((DatePicker) findViewById(R.id.datePicker1));
         this.datePicker.setCalendarViewShown(false);
 
-        timeStartPicker = (TimePicker) findViewById(R.id.timeStartPicker);
-        timeEndPicker = (TimePicker) findViewById(R.id.timeEndPicker);
+//        timeStartPicker = (TimePicker) findViewById(R.id.timeStartPicker);
+//        timeEndPicker = (TimePicker) findViewById(R.id.timeEndPicker);
+
         Calendar calendar = Calendar.getInstance();
 
         datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
@@ -71,7 +87,42 @@ public class Record extends AppCompatActivity {
                     }
                 });
 
-        timeStartPicker.setIs24HourView(true);
+        for(int i = 0; i < 24; i++) {
+            list_start_h.add(i);
+            list_end_h.add(i);
+        }
+        for(int i = 0; i < 60; i++) {
+            list_start_m.add(i);
+            list_end_m.add(i);
+        }
+        s_start_h = ((Spinner) findViewById(R.id.start_s));
+        s_start_m = ((Spinner) findViewById(R.id.start_e));
+        s_end_h = ((Spinner) findViewById(R.id.end_s));
+        s_end_m = ((Spinner) findViewById(R.id.end_e));
+
+        initTime(s_start_h, list_start_h, 0);
+        initTime(s_start_m, list_start_m, 1);
+        initTime(s_end_h, list_end_h, 2);
+        initTime(s_end_m, list_end_m, 3);
+
+        int currentH = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentM = calendar.get(Calendar.MINUTE);
+        int pH = currentH;
+        int pM = currentM;
+        if(currentM - 5 < 0) {
+            pH -= 1;
+            pM = (currentM + 60 - 5);
+        } else {
+            pM -= 5;
+        }
+
+        s_start_h.setSelection(pH);
+        s_start_m.setSelection(pM);
+        s_end_h.setSelection(currentH);
+        s_end_m.setSelection(currentM);
+
+
+//        timeStartPicker.setIs24HourView(true);
 //        timeStartPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
 //            @Override
 //            public void onTimeChanged(TimePicker view, int hourOfDay,
@@ -83,7 +134,7 @@ public class Record extends AppCompatActivity {
 //            }
 //        });
 
-        timeEndPicker.setIs24HourView(true);
+//        timeEndPicker.setIs24HourView(true);
 
 //        timeEndPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
 //            @Override
@@ -239,6 +290,7 @@ public class Record extends AppCompatActivity {
     private String getLatestEvent() {
         String x1 = FileUtils.readFileSdcard(sd_mt_record_tiems_FileName);
         String latestEvent = "no latest event!";
+        String lst = "";
         if (!x1.isEmpty()) {
             String[] arrayOfString = x1.split(";");
             if (arrayOfString != null && arrayOfString.length > 0) {
@@ -246,11 +298,21 @@ public class Record extends AppCompatActivity {
                 for (String str : arrayOfString) {
                     if(str != null && str.startsWith(dateFilter)) {
                         String[] strArr = str.split(SymbolContants.COLON);
-                        latestEvent  = (strArr.length ==  5 ? strArr[4] : "legacy") + ":\n"
+                        lst = (strArr.length ==  5 ? strArr[4] : "legacy");
+                        latestEvent  = lst + ":\n"
                                 + strArr[0] + ": " + strArr[1] + ": " + strArr[2] + " 分钟" + ": "
                                 + ProrityEnum.getByPrority(strArr[3]).getName();
                     }
                 }
+            }
+
+            // 拆分h:m到h:m
+            String[] hmArr = lst.split("~");
+            if(hmArr.length == 2) {
+                this.lastH = Integer.parseInt(hmArr[0]);
+                this.lastM = Integer.parseInt(hmArr[1]);
+                s_start_h.setSelection(lastH);
+                s_start_m.setSelection(lastM);
             }
         }
 
@@ -262,18 +324,49 @@ public class Record extends AppCompatActivity {
         if(Record.this.resultCustomTime != 0) {
             return DateTimeUtils.getCurrentTime();
         } else {
-            return this.timeEndPicker.getCurrentHour() + "~" + this.timeEndPicker.getCurrentMinute();
+            return this.data_end_h + "~" + this.data_end_m;
         }
     }
 
     private double getDuration() {
 
-        int startHour = this.timeStartPicker.getCurrentHour();
-        int startMins = this.timeStartPicker.getCurrentMinute();
+        int startHour = this.data_start_h;
+        int startMins = this.data_start_m;
 
-        int endHour = this.timeEndPicker.getCurrentHour();
-        int endMins = this.timeEndPicker.getCurrentMinute();
+        int endHour = this.data_end_h;
+        int endMins = this.data_end_m;
 
         return (endHour * 60 + endMins) - (startHour * 60 + startMins);
+    }
+
+    private void initTime(Spinner spinner, List<Integer> items, final int type) {
+        final ArrayAdapter<Integer> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, items);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> paramAnonymousAdapterView, View paramAnonymousView, int paramAnonymousInt, long paramAnonymousLong) {
+                paramAnonymousAdapterView.setVisibility(View.VISIBLE);
+                int value = (int)adapter.getItem(paramAnonymousInt);
+                switch (type) {
+                    case 0:
+                        Record.this.data_start_h = value;
+                        break;
+                    case 1:
+                        Record.this.data_start_m = value;
+                        break;
+                    case 2 :
+                        Record.this.data_end_h = value;
+                        break;
+                    case 3 :
+                        Record.this.data_end_m = value;
+                    break;
+
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> paramAnonymousAdapterView) {
+                paramAnonymousAdapterView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

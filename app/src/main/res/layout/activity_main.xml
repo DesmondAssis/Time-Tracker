@@ -32,7 +32,7 @@
         android:layout_alignBottom="@id/textView_new_summary" />
 
     <Button
-        android:id="@id/bt_next_day"
+        android:id="@+id/bt_next_day"
         android:layout_width="33dp"
         android:layout_height="wrap_content"
         android:background="@drawable/listmain"

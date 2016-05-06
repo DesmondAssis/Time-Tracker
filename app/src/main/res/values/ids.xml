@@ -50,5 +50,10 @@
     <item type="id" name="bt_pre_day">false</item>
     <item type="id" name="bt_next_day">false</item>
 
+    <item type="id" name="start_s">false</item>
+    <item type="id" name="start_e">false</item>
+    <item type="id" name="end_s">false</item>
+    <item type="id" name="end_e">false</item>
+
     <item type="id" name="textView_latest_event">false</item>
 </resources>
